@@ -22,7 +22,9 @@ namespace DAL
 
         public void Incluir(ModelTransacao modelo)
         {
-            MySqlCommand cmd = new MySqlCommand("INSERT INTO transacao(data_trans, desc_trans, valor_trans, nota_trans) VALUES(@data, @desc, @valor, @nota); SELECT @@IDENTITY;");
+            MySqlCommand cmd = new MySqlCommand();
+            
+            cmd.CommandText = "INSERT INTO transacao(data_trans, desc_trans, valor_trans, nota_trans) VALUES(@data, @desc, @valor, @nota); SELECT @@IDENTITY;";
             cmd.Parameters.AddWithValue("@data", modelo.DataTrans);
             cmd.Parameters.AddWithValue("@desc", modelo.DataTrans);
             cmd.Parameters.AddWithValue("@valor", modelo.DataTrans);
@@ -99,26 +101,31 @@ namespace DAL
             SqlDataAdapter da = new SqlDataAdapter("SELECT * FROM categoria WHERE cat_nome LIKE '%" + valor + "%'", conexao.StringConexao);
             da.Fill(tabela);
             return tabela;
-        }
+        }  */
 
-        public ModeloCategoria CarregaModeloCategoria(int codigo)
+        public ModelTransacao CarregaModeloTransacao(int codigo)
         {
-            ModeloCategoria modelo = new ModeloCategoria();
-            SqlCommand cmd = new SqlCommand();
-            cmd.Connection = conexao.ObjetoConexao;
-            cmd.CommandText = "SELECT * FROM categoria WHERE cat_cod = @codigo";
+            ModelTransacao modelo = new ModelTransacao();
+
+            MySqlCommand cmd = new MySqlCommand();
+
+            cmd.CommandText = "SELECT * FROM transacao WHERE id_trans = @codigo";
             cmd.Parameters.AddWithValue("@codigo", codigo);
-            conexao.Conectar();
-            // executereader: várias informações/registros do banco de dados
-            SqlDataReader registro = cmd.ExecuteReader();
+
+            conexao.Connect();
+            MySqlDataReader registro = cmd.ExecuteReader();
             if (registro.HasRows)
             {
                 registro.Read();
-                modelo.CatCod = Convert.ToInt32(registro["cat_cod"]);
-                modelo.CatNome = Convert.ToString(registro["cat_nome"]);
+                modelo.DataTrans = Convert.ToDateTime(registro["data_trans"]);
+                modelo.DescTrans = Convert.ToString(registro["desc_trans"]);
+                modelo.NotaTrans = Convert.ToString(registro["nota_trans"]);
+                modelo.ValorTrans = Convert.ToDouble(registro["valor_trans"]);
             }
-            conexao.Desconectar();
+
+            conexao.Disconnect();
+
             return modelo;
-        }*/
+        }
     }
 }

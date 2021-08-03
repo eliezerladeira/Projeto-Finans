@@ -17,7 +17,7 @@ namespace Model
             this.NotaTrans = "";
         }
 
-        public ModelTransacao(int id, DateTime data, String descricao, double valor, String nota)
+        public ModelTransacao(int id, DateTime? data, String descricao, double valor, String nota)
         {
             this.IdTrans = id;
             this.DataTrans = data;
@@ -27,7 +27,7 @@ namespace Model
         }
 
         private int id_trans;
-        private DateTime data_trans;
+        private DateTime? data_trans;
         private String desc_trans;
         private double valor_trans;
         private String nota_trans;
@@ -38,7 +38,7 @@ namespace Model
             set { this.id_trans = value; }
         }
 
-        public DateTime DataTrans
+        public DateTime? DataTrans
         {
             get { return this.data_trans; }
             set { this.data_trans = value; }
